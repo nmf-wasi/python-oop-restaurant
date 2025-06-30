@@ -1,5 +1,6 @@
 from abc import ABC
 
+
 class User(ABC):
     def __init__(self, name, email, phn_no, address):
         self.name = name
@@ -21,18 +22,24 @@ class Admin(User):
         super().__init__(name, email, phn_no, address)
 
     def addEmployee(self, restaurant, employee):  # restaurant is an object
-        restaurant.addEmployee(
-            employee
-        )  # we are calling addEmployee fucntion of restaurant object to add new employees
+        restaurant.addEmployee(employee)  # we are calling addEmployee fucntion of restaurant object to add new employees
 
     def viewEmployee(self, restaurant):
         restaurant.viewEmployee()
+
+    def addNewItem(self, restaurant, item):
+        restaurant.menu.addMenuItem(item)
+
+    def removeItem(self, restaurant, item):
+        restaurant.menu.removeItem(item)
 
 
 class Restaurant:
     def __init__(self, name):
         self.name = name
         self.employees = []  # database for employee
+        self.menu = Menu() #-> this will create an object named Menu in the restuarant class, then it will use Menu() to acess that class. 
+        # When admin calss is using restaurant class, it can use restaurant.menu.methodName() to use the methods in menu class as well
 
     def addEmployee(self, employee):
         self.employees.append(employee)
@@ -64,8 +71,21 @@ class Menu:
         else:
             print("Item not found!")
 
+    def showMenuItems(self):
+        print("***********Showing Menu Item***********")
+        print(f"Name\tPrice\tQuantity")
+        for i in self.items:
+            print(f"{i.name}\t {i.price}\t {i.quantity}")
 
-ad = Admin("Admin", "admin@gmail.com", 12316456, "Seoul")
-ad.addEmployee("Lia", "yejisu@gmail.com", 165463, "Gangnam", 20, "Waiter", 12000)
-ad.addEmployee("Yeji", "hwyeji@gmail.com", 15463, "Gwangjin-Gu", 22, "Chef", 15000)
-ad.viewEmployee()
+
+class FoodItem:
+    def __init__(self, name, price, quantity):
+        self.name = name
+        self.price = price
+        self.quantity = quantity
+
+
+mn = Menu()
+item = FoodItem("Pizza", 12.45, 10)
+mn.addMenuItem(item)
+mn.showMenuItems()
